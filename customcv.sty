@@ -1,0 +1,93 @@
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning}
+\usepackage{paracol}
+\usepackage{titlesec}
+\usepackage{ifthen}
+
+
+% Define the format of sections (Titles in the timeline column)
+\titleformat{\section}{
+\scshape\Large\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{12pt}{5pt} % Spacing around titles {<left spacing>}{<before spacing>}{<after spacing>}
+
+% -------------------------------------------------------------------------------------------
+% Custom environment to allow color change within itemize environments
+\newenvironment{descriptionenv}{
+	\footnotesize\color{timelinetext!70}
+}{}
+
+%------------------- pictogram Fraction: pictoFraction
+% Helper macro for defining skill table elements
+\newcommand{\skillset}[3]{
+	\textbf{#1} & \pictofraction{\faCircle}{#2}{#3}{\tiny}
+}
+\newcommand{\icon}[3]{\phantom{x}{#3\color{#2}#1}\phantom{x}}
+\newcommand{\pictofraction}[4]{%
+	
+	\pgfmathparse{#2 - 1}\foreach \n in {0,...,\pgfmathresult}{\icon{#1}{highlight}{#4}}%
+	\pgfmathparse{int(greater(#3 -#2,0))}%
+	\ifnum\pgfmathresult=1{\pgfmathparse{#3 -#2 - 1}\foreach \n in {0,...,\pgfmathresult}{\icon{#1}{black!30}{#4}}%
+	}\fi%
+}
+% -------------------------------------------------------------------------------------------
+
+
+
+% -------------------------------------------------------------------------------------------
+% TIMELINE
+
+\newcommand{\timelinepoint}[5]{ % This has to be used in a tabular environment
+% Time period, job title, LEAD/TECHNICAL, Company, Job description notes
+{#1} & \textbf{\textcolor{highlight}{#2}}\newline
+\textsc{#3} $\cdot$ {#4 ~\faBuilding}\newline
+{
+	\begin{descriptionenv}
+	#5
+	\end{descriptionenv}
+}
+\vspace{1.5em}
+}
+
+% -------------------------------------------------------------------------------------------
+% EDUCATION
+
+\newcommand{\timelineeducation}[5]{ % This has to be used in a tabular environment
+% Time period, course name, type of degree, University name, notes
+{#1} & \textbf{\textcolor{highlight}{#2}}\newline
+\textsc{#3} $\cdot$ {#4 ~\faUniversity}\newline
+{
+	\begin{descriptionenv}
+	#5
+	\end{descriptionenv}
+}
+\vspace{1.5em}
+}
+
+
+% -------------------------------------------------------------------------------------------
+
+\newcommand{\settitle}[3]{ %Bg color, fontcolor, text
+\vspace{1cm}
+\colorbox{#1}{\bfseries\textcolor{#2}{\MakeUppercase{#3}}}%
+\vspace{0.25cm}
+% Keep a newline before closing the bracket
+
+}
+
+% -------------------------------------------------------------------------------------------
+
+% inspired by: https://www.sharelatex.com/templates/cv-or-resume/fancy-cv
+% 5.25cm + 15.75cm
+\newcommand{\header}[5]{%Bg color, fontcolor, text, subtext, picture
+\tikz[remember picture,overlay] {%
+\node[rectangle, fill=#1, anchor=north, minimum width=\paperwidth, minimum height=4cm](header) at (current page.north){};%
+% size = left column width + half column separator -> offset is half of that
+\node[shape=ellipse, above right=0cm and 0.5\leftcolwidth+0.25\columnsep of header.south west, anchor=center, minimum width=\leftcolwidth+0.5\columnsep, minimum height=3cm, fill=#1] (ellie) {};%
+%\node[rectangle, fill=blue, rotate=45, below right=0 of header.south west, minimum width = 0.71*(\leftcolwidth+0.5\columnsep), minimum height=0.35*(\leftcolwidth+0.5\columnsep)] (ellie) {};%
+\node[left=8cm of header.north, anchor=center](name) at (header.east) {\fontfamily{\sfdefault}\textcolor{#2}{\huge\bfseries\selectfont \MakeUppercase #3}};%
+\node[anchor=north east](degree) at (name.south east) {\fontfamily{\sfdefault}\textcolor{#2}{\bfseries\selectfont #4}};%
+\node[below right=3.4cm and 0.5\leftcolwidth of header.west, anchor=west](picture) at (header.west) {};%
+\draw[white, line width=0.2cm, path picture={\node[anchor=center] at (path picture bounding box.center){\includegraphics[height=3.5cm]{#5}} ;}] (picture) circle (1.5cm) ;%
+}
+%\vspace{1.5cm}%
+}

@@ -1,0 +1,57 @@
+# Triggers when a PR is closed (merged) on the main branch-
+# It creates a release with the generated cv
+ 
+name: Release CV
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  release:
+    if: |
+        (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      actions: read
+      
+    steps:
+
+      # Download the artifact
+      - name: Download artifact
+        # uses: actions/download-artifact@v4
+        uses: dawidd6/action-download-artifact@v10
+        with:
+          name: CV_artifact
+          #github_token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./release-assets
+          pr: ${{github.event.pull_request.number}}
+          workflow: main.yml
+          use_unzip: true
+        
+      # Rename PDF for the release
+      - name: Rename for release
+        id: release-downloader
+        run: |
+          {
+            RELEASE_NAME="./release-assets/$(date +%F_%H-%M)_CV.pdf"
+            echo "RELEASE_NAME=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
+            mv ./release-assets/main_CV.pdf "$RELEASE_NAME"
+          }
+
+      # Create the release
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        env:
+          RELEASE_NAME: ${{ steps.release-downloader.outputs.RELEASE_NAME }}
+        with:
+          tag_name: pr-${{ github.event.pull_request.number }}
+          name: Automatic release for PR #${{ github.event.pull_request.number }}
+          files: ${{ steps.release-downloader.outputs.RELEASE_NAME }}

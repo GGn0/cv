@@ -1,0 +1,35 @@
+# Render and release a latex CV
+name: Render and upload CV
+on: pull_request
+
+jobs:
+  render:
+    name: Render and upload
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out the repository
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Render the latex pdf
+      - name: Render CV
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: |
+            main_CV.tex
+
+      # Upload CV
+      - name: Upload PDF CV
+        uses: actions/upload-artifact@v4
+        with:
+          name: CV_artifact
+          path: main_CV.pdf
+
+      # Create a comment on the pull request to show the output
+      - name: Pull request comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            Check the PDF generated after the PR.
+            Download it from here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} 

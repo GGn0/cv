@@ -1,0 +1,115 @@
+% inspired by simple hipster cv
+% https://github.com/latex-ninja/simple-hipstercv/
+
+\documentclass[orange]{customcv}
+% available options are: darkhipster, lighthipster, pastel, allblack, grey, verylight, withoutsidebar
+% withoutsidebar
+\usepackage[utf8]{inputenc}
+\usepackage[default]{raleway}
+\usepackage[margin=1cm, a4paper]{geometry}
+\usepackage{fontawesome5}
+
+
+%------------------------------------------------------------------ Variables
+
+\newlength{\rightcolwidth}
+\newlength{\leftcolwidth}
+\newlength{\hskillwidth}
+\setlength{\leftcolwidth}{0.35\paperwidth}				% Make sure it matches with the column ratio below
+\setlength{\rightcolwidth}{0.65\paperwidth}
+\setlength{\hskillwidth}{0.15\columnwidth}
+
+%------------------------------------------------------------------
+\title{Custom CV}
+\author{\LaTeX{} GGn0}
+\date{May 2025}
+
+\pagestyle{empty}
+\begin{document}
+
+% Create a space above the content of the columns
+\subsection*{}
+\vspace{10em}
+
+\setlength{\columnsep}{1cm}
+\columnratio{0.35, 0.65}
+
+
+\begin{paracol}{2}
+
+\setbgcolor
+
+% -------------------------------------------------------------------------------------------------------------------
+% LEFT SECTION
+% -------------------------------------------------------------------------------------------------------------------
+
+\flushleft
+\vspace{1cm}
+
+% -----------------
+% ABOUT ME
+% -----------------
+\input{about/about_me.tex}
+
+% -----------------
+% LANGUAGES
+% -----------------
+\input{about/languages.tex}
+
+% -----------------
+% SOFT SKILLS
+% -----------------
+\input{about/soft_skills.tex}
+
+% -----------------
+% HOBBIES
+% -----------------
+\input{about/hobbies.tex}
+
+% -----------------
+% CONTACTS
+% -----------------
+\input{about/contacts.tex}
+
+
+% -------------------------------------------------------------------------------------------------------------------
+% RIGHT SECTION (TIMELINE)
+% -------------------------------------------------------------------------------------------------------------------
+\switchcolumn
+\flushright
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Current job position
+
+% -----------------
+% WORK EXPERIENCE
+% -----------------
+\begin{minipage}[t]{0.6\textwidth}
+	\input{work/work_exp.tex}
+\end{minipage}
+\vspace{0.5cm}
+
+
+% -----------------
+% EDUCATION
+% -----------------
+\begin{minipage}[t]{0.6\textwidth}
+	\input{education/education.tex}
+\end{minipage}
+\vspace{0.5cm}
+
+
+% -----------------
+% HARD SKILLS
+% -----------------
+\begin{minipage}[t]{0.6\textwidth}
+	\input{hard_skills/hard_skills.tex}
+\end{minipage}
+
+
+\end{paracol}
+
+% Make sure the header is on top of the columns putting it at the end
+\header{headerbg}{white}{Luigi Scalzone}{ADAS Function Owner}{pic_small.jpg}
+
+\end{document}
