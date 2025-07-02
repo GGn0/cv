@@ -1,7 +1,7 @@
 % inspired by simple hipster cv
 % https://github.com/latex-ninja/simple-hipstercv/
 
-\documentclass[orange]{customcv}
+\documentclass[minimalist]{customcv}
 % available options are: darkhipster, lighthipster, pastel, allblack, grey, verylight, withoutsidebar
 % withoutsidebar
 \usepackage[utf8]{inputenc}
@@ -78,6 +78,9 @@
 \switchcolumn
 \flushright
 
+% Make sure the header is on top of the columns putting it after the next one is created
+\header{headerbg}{white}{Luigi Scalzone}{ADAS Function Owner}{pic_small.jpg}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Current job position
 
@@ -106,10 +109,6 @@
 	\input{hard_skills/hard_skills.tex}
 \end{minipage}
 
-
 \end{paracol}
-
-% Make sure the header is on top of the columns putting it at the end
-\header{headerbg}{white}{Luigi Scalzone}{ADAS Function Owner}{pic_small.jpg}
 
 \end{document}
